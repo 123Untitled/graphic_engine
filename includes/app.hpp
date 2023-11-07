@@ -3,9 +3,11 @@
 
 // macos headers
 #include <AppKit/AppKit.hpp>
+#include <ApplicationServices/ApplicationServices.h>
 
 // local headers
 #include "window.hpp"
+#include "keyboard.hpp"
 #include "memory_pool.hpp"
 
 #include <thread>
@@ -50,6 +52,9 @@ namespace engine {
 			bool applicationShouldTerminate(NS::Application*) override;
 			void applicationWillTerminate(NS::Notification*) override;
 
+			void applicationWillBecomeActive(NS::Notification*) override;
+			void applicationWillResignActive(NS::Notification*) override;
+
 			/* shared application */
 			static auto shared(void) noexcept -> NS::Application&;
 
@@ -71,6 +76,9 @@ namespace engine {
 
 			/* window */
 			engine::window _window;
+
+			/* event tap */
+			CFMachPortRef _event_tap;
 
 	};
 
