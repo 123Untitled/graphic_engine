@@ -16,3 +16,8 @@ void engine::view_delegate::drawInMTKView(MTK::View* view) {
 	_renderer.draw(mview);
 	mview._view = nullptr;
 }
+
+/* drawable size will change */
+void engine::view_delegate::drawableSizeWillChange(MTK::View* view, CGSize size) {
+	std::cout << "resize: " << size.width << "x" << size.height << std::endl;
+}
