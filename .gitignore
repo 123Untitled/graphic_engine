@@ -12,4 +12,5 @@ compile_commands.json
 **/*.so
 **/*.dll
 **/*.exe
+**/*.obj
 .DS_Store
