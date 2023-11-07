@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "camera.hpp"
+#include "time.hpp"
 #include "mtl_device.hpp"
 #include "mtl_command_queue.hpp"
 #include "mtl_command_buffer.hpp"

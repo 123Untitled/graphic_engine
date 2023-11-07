@@ -15,7 +15,6 @@ namespace mtl {
 	class view final {
 
 		friend class engine::view_delegate;
-		friend class command_buffer;
 
 		public:
 
@@ -33,6 +32,16 @@ namespace mtl {
 			/* underlying */
 			inline auto underlying(void) const noexcept -> MTK::View& {
 				return *_view;
+			}
+
+			/* fps */
+			inline auto fps(void) const noexcept -> std::size_t {
+				return _view->preferredFramesPerSecond();
+			}
+
+			/* set fps */
+			inline auto fps(const std::size_t fps) noexcept -> void {
+				_view->setPreferredFramesPerSecond(fps);
 			}
 
 

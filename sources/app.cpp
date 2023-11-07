@@ -2,7 +2,7 @@
 
 /* default constructor */
 engine::app::app(void)
-: NS::ApplicationDelegate{}, _window{} {
+: NS::ApplicationDelegate{}, _window{}, _event_tap{} {
 	auto& app = shared();
 	app.setDelegate(this);
 	app.run();
@@ -10,6 +10,8 @@ engine::app::app(void)
 
 /* destructor */
 engine::app::~app(void) noexcept {
+	CGEventTapEnable(_event_tap, false);
+	CFRelease(_event_tap);
 }
 
 /* shared application */
@@ -19,6 +21,27 @@ auto engine::app::shared(void) noexcept -> NS::Application& {
 
 
 void engine::app::applicationWillFinishLaunching(NS::Notification* notif) {
+
+	_event_tap = CGEventTapCreateForPid(
+			::getpid(),
+			kCGHeadInsertEventTap,
+			kCGEventTapOptionDefault,
+			kCGEventMaskForAllEvents,
+			&engine::event_manager::callback,
+			nullptr
+	);
+
+	if (!_event_tap) {
+		throw std::runtime_error{"failed to create event tap"};
+	}
+
+	// bind event tap to run loop
+	::CFRunLoopSourceRef run_loop_source = ::CFMachPortCreateRunLoopSource(kCFAllocatorDefault, _event_tap, 0);
+	::CFRunLoopAddSource(CFRunLoopGetCurrent(), run_loop_source, kCFRunLoopCommonModes);
+	::CGEventTapEnable(_event_tap, true);
+
+
+
 	std::cout << "application will finish launching" << std::endl;
 	to_application(*notif).setMainMenu(create_menu());
 	to_application(*notif).setActivationPolicy(NS::ActivationPolicy::ActivationPolicyRegular);
@@ -45,6 +68,16 @@ bool engine::app::applicationShouldTerminate(NS::Application* app) {
 
 void engine::app::applicationWillTerminate(NS::Notification* notif) {
 	std::cout << "application will terminate" << std::endl;
+}
+
+/* application will become active */
+void engine::app::applicationWillBecomeActive(NS::Notification* notif) {
+	std::cout << "focus gained" << std::endl;
+}
+
+/* application will resign active */
+void engine::app::applicationWillResignActive(NS::Notification* notif) {
+	std::cout << "focus lost" << std::endl;
 }
 
 

@@ -21,6 +21,8 @@ namespace engine {
 
 		public:
 
+			// -- public lifecycle --------------------------------------------
+
 			/* default constructor */
 			view_delegate(void);
 
@@ -33,8 +35,15 @@ namespace engine {
 			/* destructor */
 			~view_delegate(void) noexcept override;
 
+
+			// -- overrides ---------------------------------------------------
+
 			/* draw in view */
 			void drawInMTKView(MTK::View*) override;
+
+			/* drawable size will change */
+			void drawableSizeWillChange(MTK::View*, CGSize) override;
+
 
 
 			// -- public assignment operators ---------------------------------
@@ -49,8 +58,6 @@ namespace engine {
 		private:
 
 			// -- private members ---------------------------------------------
-
-			MTL::CommandQueue* _queue;
 
 			/* renderer */
 			engine::renderer _renderer;

@@ -46,11 +46,12 @@ all: $(NAME)
 
 
 $(NAME): $(AIR)
-	$(METALLIB) $^ -o $@
+	@$(METALLIB) $^ -o $@
 	@file $(NAME);
 
 $(AIRDIR)/%.air: %.metal Makefile | $(AIRDIR)
-	$(METAL) $(MFLAGS) -c $< -o $@
+	@echo '\x1b[32mshader\x1b[0m compiling -> $<'
+	@$(METAL) $(MFLAGS) -c $< -o $@
 
 $(AIRDIR):
 	@mkdir -pv $@

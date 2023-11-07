@@ -87,10 +87,21 @@ namespace mtl {
 				_encoder->setVertexBuffer(buffer, offset, index);
 			}
 
+			/* set vertex bytes */
+			inline void set_vertex_bytes(const void* bytes, const std::size_t length, const std::size_t index) noexcept {
+				_encoder->setVertexBytes(bytes, length, index);
+			}
+
 			/* draw primitives */
 			inline void draw_primitives(const MTL::PrimitiveType type, const std::size_t count) noexcept {
 				_encoder->drawPrimitives(type, static_cast<std::size_t>(0U), count);
 			}
+
+			/* draw indexed primitives */
+			inline void draw_indexed_primitives(const MTL::PrimitiveType type, const std::size_t count, const mtl::buffer& buffer) noexcept {
+				_encoder->drawIndexedPrimitives(type, count, MTL::IndexTypeUInt32, buffer, static_cast<std::size_t>(0U));
+			}
+
 
 
 

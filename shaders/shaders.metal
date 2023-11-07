@@ -1,12 +1,11 @@
 #include <metal_stdlib>
-using namespace metal;
 #include <simd/simd.h>
 
 
 struct vertex_in {
-	float3 position [[ attribute(0) ]];
-	float3 color    [[ attribute(1) ]];
-	float3 normal   [[ attribute(2) ]];
+	metal::float3 position [[ attribute(0) ]];
+	metal::float3 color    [[ attribute(1) ]];
+	metal::float3 normal   [[ attribute(2) ]];
 };
 
 struct vertex_out {
@@ -14,17 +13,22 @@ struct vertex_out {
 	float3 color;
 };
 
+/* vertex shader */
+auto vertex vertex_main(const vertex_in           vertice    [[ stage_in  ]],
+						constant metal::float4x4& projection [[ buffer(1) ]],
+						constant metal::float4x4& view       [[ buffer(2) ]]) -> vertex_out {
 
-
-vertex_out vertex vertex_main(const vertex_in vertice [[ stage_in ]]) {
+	float4 view_position = view * float4(vertice.position, 1.0);
+	float4 projection_position = projection * view_position;
 
 	vertex_out out;
-	out.position = float4(vertice.position, 1.0);
+	out.position = projection_position;
 	out.color = vertice.color;
 	return out;
 }
 
-float4 fragment fragment_main(vertex_out frag [[stage_in]] ) {
+/* fragment shader */
+auto fragment fragment_main(const vertex_out frag [[stage_in]]) -> float4 {
 	return float4(frag.color, 1.0);
 }
 

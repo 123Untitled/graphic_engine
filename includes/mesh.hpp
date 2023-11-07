@@ -101,18 +101,34 @@ namespace engine {
 
 			/* default constructor */
 			inline mesh(void) noexcept
-			: _opts{}, _vertex{}, _index{} {}
+			: _opts{}, _vertices{}, _indexes{} {}
 
 			/* vertex constructor */
 			inline mesh(const std::vector<engine::vertex>& vertex) noexcept
-			: _opts{}, _vertex{vertex.size() * sizeof(engine::vertex)}, _vcount{vertex.size()}, _index{}, _icount{0} {
+			:	_opts{},
+				_vertices{vertex.size() * sizeof(engine::vertex)},
+				_indexes{},
+				_vcount{vertex.size()},
+				_icount{0} {
 				// size already set (overloaded method)
-				_vertex.set_contents(vertex.data());
+				_vertices.set_contents(vertex.data());
+			}
+
+			/* vertex + index constructor */
+			inline mesh(const engine::vpackage& vpackage) noexcept
+			:	_opts{},
+				_vertices{vpackage.first.size() * sizeof(engine::vertex)},
+				_indexes{vpackage.second.size() * sizeof(unsigned int)},
+				_vcount{vpackage.first.size()},
+				_icount{vpackage.second.size()} {
+
+				_vertices.set_contents(vpackage.first.data());
+				_indexes.set_contents(vpackage.second.data());
 			}
 
 			/* move constructor */
 			inline mesh(mesh&& mesh) noexcept
-			: _opts{std::move(mesh._opts)}, _vertex{std::move(mesh._vertex)}, _index{std::move(mesh._index)} {}
+			: _opts{std::move(mesh._opts)}, _vertices{std::move(mesh._vertices)}, _indexes{std::move(mesh._indexes)} {}
 
 			/* destructor */
 			inline ~mesh(void) noexcept = default;
@@ -129,11 +145,14 @@ namespace engine {
 				// set front facing
 				encoder.winding(_opts.winding());
 
+				encoder.set_vertex_buffer(_vertices, 0, 0);
 
-				encoder.set_vertex_buffer(_vertex, 0, 0);
-
-				encoder.draw_primitives(_opts.primitive(), _vcount);
-
+				if (not _indexes) {
+					encoder.draw_primitives(_opts.primitive(), _vcount);
+				}
+				else {
+					encoder.draw_indexed_primitives(_opts.primitive(), _icount, _indexes);
+				}
 
 				//if (not _index)
 					//encoder.drawPrimitives(_opts.primitive(), 0, 0, 0);
@@ -158,14 +177,16 @@ namespace engine {
 			/* options */
 			options _opts;
 
+
 			/* vertex buffer */
-			mtl::buffer _vertex;
+			mtl::buffer _vertices;
+
+			/* index buffer */
+			mtl::buffer _indexes;
+
 
 			/* vertex count */
 			std::size_t _vcount;
-
-			/* index buffer */
-			mtl::buffer _index;
 
 			/* index count */
 			std::size_t _icount;

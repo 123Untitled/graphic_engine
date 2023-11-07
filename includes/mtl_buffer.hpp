@@ -1,27 +1,16 @@
 #ifndef METAL_BUFFER_HPP
 #define METAL_BUFFER_HPP
 
+// standard headers
+#include <array>
+#include <iostream>
 
-#include <Metal/Metal.hpp>
+// metal headers
+#include <Metal/MTLBuffer.hpp>
 
+// local headers
 #include "mtl_device.hpp"
 #include "macros.hpp"
-#include <array>
-
-
-struct vec3 {
-	double x;
-	double y;
-	double z;
-};
-
-struct vertex {
-	vec3 position;
-	vec3 color;
-	vec3 normal;
-};
-
-#include <iostream>
 
 
 // -- M T L  N A M E S P A C E ------------------------------------------------

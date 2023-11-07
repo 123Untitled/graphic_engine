@@ -61,7 +61,7 @@ namespace mtl {
 
 			/* present drawable */
 			inline void present_drawable(const mtl::view& view) const noexcept {
-				_command->presentDrawable(view._view->currentDrawable());
+				_command->presentDrawable(view.underlying().currentDrawable());
 			}
 
 

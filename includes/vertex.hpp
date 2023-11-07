@@ -4,11 +4,24 @@
 
 #include <simd/simd.h>
 #include <iostream>
+#include <vector>
 
 
 // -- E N G I N E  N A M E S P A C E ------------------------------------------
 
 namespace engine {
+
+	/* forward declaration */
+	class vertex;
+
+	/* vertex vector */
+	using vertices = std::vector<vertex>;
+
+	/* index vector */
+	using indexes = std::vector<unsigned int>;
+
+	/* vertex package */
+	using vpackage = std::pair<vertices, indexes>;
 
 
 	// -- V E R T E X ---------------------------------------------------------
