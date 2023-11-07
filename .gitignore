@@ -1,0 +1,15 @@
+build/
+learn_metal/
+exec_engine
+compile_commands.json
+**/*.air
+**/*.metallib
+**/*.dylib
+**/*.dSYM
+**/*.o
+**/*.d
+**/*.a
+**/*.so
+**/*.dll
+**/*.exe
+.DS_Store
