@@ -7,8 +7,7 @@
 
 // local headers
 #include "window.hpp"
-#include "keyboard.hpp"
-#include "memory_pool.hpp"
+#include "event.hpp"
 
 #include <thread>
 
