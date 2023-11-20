@@ -3,6 +3,7 @@ build/
 learn_metal/
 exec_engine
 compile_commands.json
+.cache/
 **/*.air
 **/*.metallib
 **/*.dylib
