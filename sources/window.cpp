@@ -19,7 +19,7 @@ auto engine::window::init(void) -> void {
 
 	// -- window --------------------------------------------------------------
 
-	auto frame = CGRect{{400.0, 200.0}, {800.0, 600.0}};
+	auto frame = engine::screen::frame();
 
 	_window = NS::Window::alloc()->init(
 				frame,
@@ -44,10 +44,13 @@ auto engine::window::init(void) -> void {
 	// get metal device
 	auto& device = mtl::device::underlying();
 
+	CGRect rect = engine::screen::frame();
+	rect.size.width = rect.size.width / 10;
+	rect.size.height = rect.size.height / 10;
 
 	// -- metal view ----------------------------------------------------------
 
-	_mtkview = MTK::View::alloc()->init(frame, &device);
+	_mtkview = MTK::View::alloc()->init(rect, &device);
 
 	if (_mtkview == nullptr)
 		throw std::runtime_error("failed to create metal view");
@@ -55,11 +58,15 @@ auto engine::window::init(void) -> void {
 	_mtkview->retain();
 
 	_mtkview->setColorPixelFormat(MTL::PixelFormat::PixelFormatBGRA8Unorm_sRGB);
-	_mtkview->setClearColor(MTL::ClearColor::Make(0.8, 0.3, 0.5, 0.0));
+	_mtkview->setClearColor(MTL::ClearColor::Make(0.1, 0.1, 0.1, 0.0));
 	_mtkview->setDelegate(&_view_delegate);
+
+	//_mtkview->setDrawableSize(rect.size);
+
+
 	_window->setContentView(_mtkview);
 	_window->setTitle(NS::String::string("engine", NS::StringEncoding::UTF8StringEncoding));
-	_window->center();
+	//_window->center();
 	_window->makeKeyAndOrderFront(nullptr);
 
 }
