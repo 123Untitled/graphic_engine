@@ -1,5 +1,6 @@
 #include "view.hpp"
 
+#include "camera.hpp"
 
 /* default constructor */
 engine::view_delegate::view_delegate(void)
@@ -18,6 +19,6 @@ void engine::view_delegate::drawInMTKView(MTK::View* view) {
 }
 
 /* drawable size will change */
-void engine::view_delegate::drawableSizeWillChange(MTK::View* view, CGSize size) {
-	std::cout << "resize: " << size.width << "x" << size.height << std::endl;
+void engine::view_delegate::drawableSizeWillChange(MTK::View*, CGSize size) {
+	engine::screen::update(size.width, size.height);
 }
