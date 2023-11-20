@@ -6,7 +6,6 @@
 
 #include "mtl_device.hpp"
 #include "ns_string.hpp"
-#include <string>
 
 
 // -- M T L  N A M E S P A C E ------------------------------------------------
@@ -24,7 +23,8 @@ namespace mtl {
 			// -- public lifecycle --------------------------------------------
 
 			/* path constructor */
-			inline library(const std::string& path)
+			template <decltype(sizeof(0)) N>
+			inline library(const char (&path)[N])
 			: _library{nullptr} {
 				_library = mtl::device::underlying().newLibrary(ns::string{path}, nullptr);
 				if (_library == nullptr)

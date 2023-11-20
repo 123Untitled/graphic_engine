@@ -16,8 +16,8 @@ struct vertex_out {
 	float3 view_position;
 	float3 view_direction;
 	float3 normal_surface;
+	float depth;
 };
-
 
 /* vertex shader */
 auto vertex vertex_main(const vertex_in           vertice    [[ stage_in  ]],
@@ -34,7 +34,7 @@ auto vertex vertex_main(const vertex_in           vertice    [[ stage_in  ]],
 	const float3 view_direction = metal::normalize(cam_pos - model_position.xyz);
 
 	const float3 normal_surface = (model * metal::float4(vertice.normal, 0.0)).xyz;
-
+	// this work for uniform scale, but for better result, we need a normal matrix
 
 	return vertex_out{
 		projection * view_position,
@@ -42,6 +42,7 @@ auto vertex vertex_main(const vertex_in           vertice    [[ stage_in  ]],
 		view_position.xyz,
 		view_direction,
 		normal_surface,
+		metal::distance(model_position.xyz, cam_pos)
 	};
 }
 

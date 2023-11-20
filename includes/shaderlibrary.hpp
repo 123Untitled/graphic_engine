@@ -8,7 +8,7 @@
 #include <iostream>
 #include <unordered_map>
 
-#include "macros.hpp"
+#include <xns>
 
 
 // -- E N G I N E -------------------------------------------------------------
@@ -41,17 +41,12 @@ namespace engine {
 				return instance;
 			}
 
-
 			// -- public accessors --------------------------------------------
 
-			/* vertex function */
-			static inline auto vertex(const std::string& name) -> mtl::function& {
-				return shared()._vertexs.at(name);
-			}
-
-			/* fragment function */
-			static inline auto fragment(const std::string& name) -> mtl::function& {
-				return shared()._fragments.at(name);
+			/* get function */
+			template <xns::basic_string_literal name>
+			static inline auto function(void) -> const mtl::function& {
+				return shared()._functions.get<name>();
 			}
 
 
@@ -61,9 +56,13 @@ namespace engine {
 
 			/* default constructor */
 			inline shaderlibrary(void)
-			: _library{"shaders/lib.metallib"} {
-				_vertexs.try_emplace("vertex_main", "vertex_main", _library);
-				_fragments.try_emplace("fragment_main", "fragment_main", _library);
+			: _library{"shaders/lib.metallib"},
+			  _functions{
+				mtl::function{"default_vertex_2d", _library},
+				mtl::function{"default_fragment_2d", _library},
+				mtl::function{"vertex_main", _library},
+				mtl::function{"fragment_main", _library}
+			  } {
 			}
 
 
@@ -72,12 +71,11 @@ namespace engine {
 			/* library */
 			mtl::library _library;
 
-			/* vertex function hash table */
-			std::unordered_map<std::string, mtl::function> _vertexs;
-
-			/* fragment function hash table */
-			std::unordered_map<std::string, mtl::function> _fragments;
-
+			/* map */
+			xns::literal_map<mtl::function, "default_vertex_2d",
+											"default_fragment_2d",
+											"vertex_main",
+											"fragment_main"> _functions;
 
 	};
 

@@ -10,7 +10,7 @@
 
 // local headers
 #include "mtl_device.hpp"
-#include "macros.hpp"
+#include <xns>
 
 
 // -- M T L  N A M E S P A C E ------------------------------------------------
@@ -47,9 +47,9 @@ namespace mtl {
 			non_copyable(buffer);
 
 			/* move constructor */
-			inline buffer(self&& buffer) noexcept
-			: _buffer{buffer._buffer} {
-				buffer._buffer = nullptr;
+			inline buffer(self&& other) noexcept
+			: _buffer{other._buffer} {
+				other._buffer = nullptr;
 			}
 
 			/* destructor */

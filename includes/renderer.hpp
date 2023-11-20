@@ -12,32 +12,17 @@
 #include "mtl_render_command_encoder.hpp"
 #include "mtl_render_pipeline_state.hpp"
 #include "mtl_view.hpp"
+#include "mtl_depth_stencil_state.hpp"
 
-
-class mesh final {
-
-	public:
-		int numberOfVertices{0};
-		MTL::Buffer* vertexPositionsBuffer{nullptr};
-		MTL::Buffer* vertexColorsBuffer{nullptr};
-};
-
-class renderpass final {
-
-	private:
-
-		MTL::RenderPipelineState* _pipeline;
-		mesh* _mesh;
-
-};
-
-
+#include "scene.hpp"
 
 
 // -- E N G I N E  N A M E S P A C E ------------------------------------------
 
 namespace engine {
 
+
+	// -- R E N D E R E R -----------------------------------------------------
 
 	class renderer final {
 
@@ -62,8 +47,8 @@ namespace engine {
 			/* command queue */
 			mtl::command_queue _queue;
 
-			/* pipeline state */
-			mtl::render_pipeline_state _state;
+			/* scenes */
+			std::vector<engine::scene> _scenes;
 
 	};
 

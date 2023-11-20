@@ -21,6 +21,8 @@ namespace mtl {
 			using self = mtl::device;
 
 
+			// -- public lifecycle --------------------------------------------
+
 			/* deleted copy constructor */
 			device(const device&) = delete;
 
@@ -28,7 +30,10 @@ namespace mtl {
 			device(device&&) = delete;
 
 			/* destructor */
-			~device(void) noexcept;
+			inline ~device(void) noexcept {
+				if (_device == nullptr) return;
+				_device->release();
+			}
 
 			/* deleted copy assignment */
 			auto operator=(const device&) -> device& = delete;
@@ -41,7 +46,10 @@ namespace mtl {
 			// -- public static accessors -------------------------------------
 
 			/* instance */
-			static auto shared(void) -> self&;
+			static inline auto shared(void) -> self& {
+				static mtl::device instance;
+				return instance;
+			}
 
 			/* underlying */
 			static inline auto underlying(void) -> MTL::Device& {
@@ -50,18 +58,33 @@ namespace mtl {
 			}
 
 
+			// -- public methods ----------------------------------------------
+
+			/* new render pipeline state */
+			//inline auto new_render_pipeline_state(const MTL::RenderPipelineDescriptor&) const -> mtl::render_pipeline_state;
+
+
 			// -- public convertion operators ---------------------------------
 
-			/* underlying */
+			/* underlying reference */
 			inline operator MTL::Device&(void) noexcept {
 				return *_device;
 			}
 
-			/* new buffer */
-			static auto new_buffer(const std::size_t, const std::size_t) -> MTL::Buffer*;
+			/* underlying const reference */
+			inline operator const MTL::Device&(void) const noexcept {
+				return *_device;
+			}
 
-			/* new buffer */
-			static auto new_buffer(const std::size_t) -> MTL::Buffer*;
+			/* underlying pointer */
+			inline operator MTL::Device*(void) noexcept {
+				return _device;
+			}
+
+			/* underlying const pointer */
+			inline operator const MTL::Device*(void) const noexcept {
+				return _device;
+			}
 
 
 		private:
@@ -69,7 +92,11 @@ namespace mtl {
 			// -- private lifecycle -------------------------------------------
 
 			/* default constructor */
-			device(void);
+			inline device(void)
+			: _device(MTL::CreateSystemDefaultDevice()) {
+				if (_device == nullptr)
+					throw std::runtime_error("failed to create system default device");
+			}
 
 
 			// -- private members ---------------------------------------------

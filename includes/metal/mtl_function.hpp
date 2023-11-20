@@ -4,7 +4,7 @@
 #include <Metal/Metal.hpp>
 
 #include "mtl_library.hpp"
-#include "macros.hpp"
+#include <xns>
 
 #include <string>
 
@@ -66,20 +66,34 @@ namespace mtl {
 
 			// -- public conversion operators ---------------------------------
 
-			/* underlying */
+			/* underlying reference */
+			inline operator MTL::Function&(void) const noexcept {
+				return *_function;
+			}
+
+			/* underlying const reference */
+			inline operator const MTL::Function&(void) const noexcept {
+				return *_function;
+			}
+
+			/* underlying pointer */
 			inline operator MTL::Function*(void) const noexcept {
 				return _function;
 			}
 
-			/* underlying */
-			inline operator MTL::Function&(void) const noexcept {
-				return *_function;
+			/* underlying const pointer */
+			inline operator const MTL::Function*(void) noexcept {
+				return _function;
 			}
+
+
+			// -- public accessors --------------------------------------------
 
 			/* underlying */
 			inline auto underlying(void) const noexcept -> MTL::Function& {
 				return *_function;
 			}
+
 
 		private:
 

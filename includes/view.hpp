@@ -3,6 +3,7 @@
 
 // local headers
 #include "renderer.hpp"
+#include "screen.hpp"
 #include "mtl_view.hpp"
 #include "mtl_command_queue.hpp"
 

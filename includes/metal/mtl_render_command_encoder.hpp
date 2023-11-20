@@ -6,6 +6,7 @@
 #include "mtl_command_buffer.hpp"
 #include "mtl_render_pass_descriptor.hpp"
 #include "mtl_render_pipeline_state.hpp"
+#include "mtl_depth_stencil_state.hpp"
 #include "mtl_buffer.hpp"
 
 
@@ -55,8 +56,13 @@ namespace mtl {
 
 
 			/* set render pipeline state */
-			inline void set_render_pipeline_state(const mtl::render_pipeline_state& state) noexcept {
+			inline auto set_render_pipeline_state(const mtl::render_pipeline_state& state) noexcept -> void {
 				_encoder->setRenderPipelineState(state);
+			}
+
+			/* set depth stencil state */
+			inline auto set_depth_stencil_state(const mtl::depth_stencil_state& state) noexcept -> void {
+				_encoder->setDepthStencilState(state);
 			}
 
 			/* underlying */
@@ -100,6 +106,11 @@ namespace mtl {
 			/* draw indexed primitives */
 			inline void draw_indexed_primitives(const MTL::PrimitiveType type, const std::size_t count, const mtl::buffer& buffer) noexcept {
 				_encoder->drawIndexedPrimitives(type, count, MTL::IndexTypeUInt32, buffer, static_cast<std::size_t>(0U));
+			}
+
+			/* set fragment bytes */
+			inline void set_fragment_bytes(const void* bytes, const std::size_t length, const std::size_t index) noexcept {
+				_encoder->setFragmentBytes(bytes, length, index);
 			}
 
 
