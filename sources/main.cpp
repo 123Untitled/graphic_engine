@@ -9,22 +9,33 @@
 #include "renderer.hpp"
 #include "mtl_buffer.hpp"
 #include "mesh.hpp"
-#include "memory_pool.hpp"
 
 #include "vertex.hpp"
 #include <termios.h>
-#include "model_loader.hpp"
+#include "wavefront.hpp"
 
 
+#include "screen.hpp"
+
+#include "quaternions.hpp"
+
+#include "simd.hpp"
 
 
 int main(int ac, char** av) {
 
-	engine::model_loader::parse("untitled.obj");
+
+	//xns::vec<float, 4> vec{1.0f, 2.0f, 3.0f, 4.0f};
+	//
+	//vec.normalize();
+	//
+	//std::cout << vec << std::endl;
+	//
+	//return 0;
 
 
-	return 0;
-
+	//engine::wavefront<float>::parse("assets/cube.obj");
+	//return 0;
 
 
 
