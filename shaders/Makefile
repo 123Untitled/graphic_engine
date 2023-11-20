@@ -29,7 +29,7 @@ override METALLIB := $(shell xcrun --find metallib)
 
 
 override NAME     := lib.metallib
-override SRCS     := shaders.metal loki.metal
+override SRCS     := shaders.metal loki.metal 2d_shaders.metal
 
 override AIRDIR   := air
 override AIR      := $(patsubst %.metal, $(AIRDIR)/%.air, $(SRCS))
