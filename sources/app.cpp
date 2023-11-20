@@ -10,8 +10,8 @@ engine::app::app(void)
 
 /* destructor */
 engine::app::~app(void) noexcept {
-	CGEventTapEnable(_event_tap, false);
-	CFRelease(_event_tap);
+	::CGEventTapEnable(_event_tap, false);
+	::CFRelease(_event_tap);
 }
 
 /* shared application */
@@ -22,12 +22,12 @@ auto engine::app::shared(void) noexcept -> NS::Application& {
 
 void engine::app::applicationWillFinishLaunching(NS::Notification* notif) {
 
-	_event_tap = CGEventTapCreateForPid(
+	_event_tap = ::CGEventTapCreateForPid(
 			::getpid(),
 			kCGHeadInsertEventTap,
 			kCGEventTapOptionDefault,
 			kCGEventMaskForAllEvents,
-			&engine::event_manager::callback,
+			&engine::event::callback,
 			nullptr
 	);
 
@@ -39,6 +39,7 @@ void engine::app::applicationWillFinishLaunching(NS::Notification* notif) {
 	::CFRunLoopSourceRef run_loop_source = ::CFMachPortCreateRunLoopSource(kCFAllocatorDefault, _event_tap, 0);
 	::CFRunLoopAddSource(CFRunLoopGetCurrent(), run_loop_source, kCFRunLoopCommonModes);
 	::CGEventTapEnable(_event_tap, true);
+
 
 
 
